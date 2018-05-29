@@ -1,6 +1,7 @@
 import sys
 import csv
 import netaddr
+import ipaddress
 
 
 class RangeToCidr(object):
@@ -13,6 +14,7 @@ class RangeToCidr(object):
         self.csvFilePath = csvFilePath
         self.ipRanges = None
         self.cidrs = None
+        self.collapsedCidrs = None
 
     def load(self):
         self.ipRanges = []
@@ -27,13 +29,16 @@ class RangeToCidr(object):
 
     def convert(self):
         self.cidrs = []
+        self.collapsedCidrs = []
         for ipRange in self.ipRanges:
             for cidr in netaddr.iprange_to_cidrs(ipRange['Start'], ipRange['End']):
-                self.cidrs.append(cidr)
+                self.cidrs.append(ipaddress.ip_network(cidr))
+        for cidr in ipaddress.collapse_addresses(self.cidrs):
+            self.collapsedCidrs.append(cidr)
         return self
 
     def print(self):
-        for cidr in self.cidrs:
+        for cidr in self.collapsedCidrs:
             print(cidr)
 
 if len(sys.argv) != 2:
