@@ -14,7 +14,7 @@ pipenv run python range-to-cidr.py PATH_TO_CSV
 
 ```bash
 $ wget https://www.nirsoft.net/countryip/ca.csv
-$ pipenv run python range-to-cidr.py cs.csv
+$ pipenv run python range-to-cidr.py ca.csv
 23.16.0.0/15
 23.29.192.0/19
 23.83.208.0/20
